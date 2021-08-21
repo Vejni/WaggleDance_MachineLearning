@@ -1,0 +1,8 @@
+.Rproj.user
+.Rhistory
+.RData*
+.Ruserdata
+*.docx*
+Apis_mellifera.Amel_4.5.cds.all.fa
+*.bib*
+Manuscript/*.csv*

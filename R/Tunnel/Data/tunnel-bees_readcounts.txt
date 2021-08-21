@@ -1,0 +1,5 @@
+NEW ID	EXPLANATION	YEAR
+TDL	tunnel dancer long-distance	2016
+TDS	tunnel dancer short-distance	2016
+TNL	tunnel non-dancer long-distance	2016
+TNS	tunnel non-dancer short-distance	2016
