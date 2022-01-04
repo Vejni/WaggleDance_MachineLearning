@@ -80,7 +80,7 @@ ggpairs(
 pca.data <- data.frame(
   Sample=rownames(pca$x),
   X=pca$x[,1],
-  Y=pca$x[,2],
+  Y=pca$x[,2]
 )
 
 Class = raw_data$Class

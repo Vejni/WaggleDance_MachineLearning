@@ -83,9 +83,14 @@ stopCluster(cl)
 ## ============================ Summary ============================ ##
 model
 
+# Write results
+write_xlsx(model$results,"./R/Tunnel/Data/Out/RFE_Params.xlsx")
+
 # The predictors function can be used to get a text string of 
 # variable names that were picked in the final model
-predictors(model)
+rfe.vars.5000 <- predictors(model) %>% as.data.frame()
+write_xlsx(rfe.vars.5000,"./R/Tunnel/Data/Out/RFE_Vars.xlsx")
+
 
 # Save
 png(filename="./R/Tunnel/Models/RFE/Plots/Selected_Variables_Scree.png")

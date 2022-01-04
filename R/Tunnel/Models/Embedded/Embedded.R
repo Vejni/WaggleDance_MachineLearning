@@ -1,6 +1,7 @@
 # Packages
 library(tidyverse)
 library(openxlsx)
+library(writexl)
 library(doSNOW)
 library(caret)
 library(e1071)
@@ -98,6 +99,10 @@ stopCluster(cl)
 svm_radial
 glmnet
 
+# Save their parameters
+write_xlsx(svm_radial$results,"./R/Tunnel/Data/Out/SVM_Params.xlsx")
+write_xlsx(glmnet$results,"./R/Tunnel/Data/Out/GLMNET_Params.xlsx")
+
 # collect resamples
 results <- resamples(
   list(
@@ -110,7 +115,7 @@ results <- resamples(
 summary(results)
 
 # Save dotplot
-png(filename="./R/Tunnel/Models/Embedded/Plots/Dotplot.png")
+png(filename="./R/Tunnel/Models/Embedded/Dotplot.png")
 dotplot(results)
 dev.off()
 
@@ -127,19 +132,29 @@ confusionMatrix(glmnet.predict, bees.test$Class)
 ## ============================ Importance ============================ ##
 # SVM
 svm.vars <- varImp(svm_radial, scale = FALSE)
-svm.vars
+svm.vars$importance %>% 
+  arrange(desc(Dancer)) %>% 
+  head(5000) %>% 
+  mutate(Importance = Dancer) %>% 
+  select(Importance) %>% 
+  cbind(Gene = rownames(.), .) %>%
+  write_xlsx(., "./R/Tunnel/Data/Out/SVM_Vars.xlsx")
 
 # Save Plot
-png(filename="./R/Tunnel/Models/Embedded/Plots/VarImp_SVM.png")
+png(filename="./R/Tunnel/Models/Embedded/VarImp_SVM.png")
 plot(svm.vars, top = 20)
 dev.off()
 
 # GLMNET
 glmnet.vars <- varImp(glmnet, scale = FALSE)
-glmnet.vars
+glmnet.vars$importance %>% 
+  arrange(desc(Overall)) %>% 
+  filter(Overall > 0) %>% 
+  cbind(Gene = rownames(.), .) %>%
+  write_xlsx(.,"./R/Tunnel/Data/Out/GLMNET_Vars.xlsx")
 
 # Save Plot
-png(filename="./R/Tunnel/Models/Embedded/Plots/VarImp_GLMNET.png")
+png(filename="./R/Tunnel/Models/Embedded/VarImp_GLMNET.png")
 plot(glmnet.vars, top = 20)
 dev.off()
 
